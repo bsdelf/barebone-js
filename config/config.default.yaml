@@ -1,0 +1,24 @@
+providers:
+  logger:
+    file: null
+    pretty: true
+
+  axios:
+    timeout: 5000
+
+  redis:
+    host: 'localhost'
+    port: 6379
+
+  sequelize:
+    dialect: 'mysql'
+    host: 'localhost'
+    username: 'root'
+    password: 'root'
+    database: 'barebone'
+    logging: false
+
+applications:
+  http:
+    address: 'localhost'
+    port: 3000
