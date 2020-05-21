@@ -1,0 +1,40 @@
+digraph G {
+    graph [rankdir=TB]
+    node [shape=box style=filled]
+
+    subgraph cluster_1 {
+        style="dashed"
+        cli [label="CLI"]
+        cron [label="Cron"]
+        restful [label="RESTful API"]
+        jsonrpc [label="RPC API"]
+    }
+
+    subgraph cluster_2 {
+        style="dashed"
+        command [label="Command"]
+        route [label="Route"]
+        proc [label="Procedure"]
+    }
+
+    subgraph cluster_3 {
+        style="dashed"
+        controller [label="Controller"]
+    }
+
+    subgraph cluster_4 {
+        style="dashed"
+        model [label="Model"]
+    }
+
+    cli -> command
+    cron -> command
+    restful -> route
+    jsonrpc -> proc
+
+    proc -> controller
+    route -> controller
+    command -> controller
+
+    controller -> model
+}
