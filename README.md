@@ -65,7 +65,7 @@ Procedures for RPC server.
 Controllers, to be reused by other components. For example:
 
 - Routes
-- Procedues
+- Procedures
 - Commands
 
 This is the place where most of your business logic should be implemented in.
