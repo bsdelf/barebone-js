@@ -13,7 +13,9 @@ const main = async () => {
     logger: context.logger,
   });
 
-  await server.register(routes.health).ready();
+  server.register(routes.health);
+  await server.ready();
+
   const rouetList = server.printRoutes();
   context.logger.info(`Server routes:\n${rouetList}`);
 
