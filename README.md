@@ -15,23 +15,21 @@ barebone-js is a backend boilerplate for Node.js and TypeScript. It's not a fram
 
 ### /config
 
-Configs are stacked, from bottom to top:
+Config files. When application start, a portion of config files under this folder will be read, stacked, and merged into a single config object based on `NODE_ENV`.
 
-- config.default.yaml
-- config.\<_environment_\>.yaml
-- config.local.yaml
+For development, staging, and production environment, the config stack is:
 
-All these configs will be merged into a single config object during the bootstrap process.
+1. config.default.yaml
+2. config.\<_environment_\>.yaml (optional)
+3. config.local.yaml (optional, highest priority)
 
-In practice, the default and environmental configs are supposed to store generic insensitive settings like URL and port. While the local config is supposed to store variable and sensitive settings like tokens and passwords, it could show up locally or in a deployment, it should never be committed into repository or built into image. For kubernetes deployments, we suggest use [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) to mount local config into container.
+For unit test, the configs stack is:
 
-Available \<_environment_\>:
+1. config.default.yaml
+2. config.test.yaml (optional)
+3. config.local.test.yaml (optional, highest priority)
 
-- ci: for continuous integration environment
-- development: for development environment
-- test: for test environment
-- staging: for staging environment
-- production: for production environment
+In practice, the default and environmental configs are supposed to store generic insensitive settings like URL and port. While the local config is supposed to store variable and sensitive settings like tokens and passwords. Local config should never be committed into repository or built into image. For kubernetes deployments, we suggest use [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) to mount local config into container.
 
 ### /src/applications
 
@@ -98,7 +96,7 @@ Sequelize migrations.
 
 ### /src/libraries
 
-Util functions and classes.
+Utility functions and classes.
 
 ## Architecture
 

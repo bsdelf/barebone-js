@@ -6,8 +6,8 @@ digraph G {
         style="dashed"
         cli [label="CLI"]
         cron [label="Cron"]
-        restful [label="RESTful API"]
-        jsonrpc [label="RPC API"]
+        restful [label="HTTP Server"]
+        jsonrpc [label="RPC Server"]
     }
 
     subgraph cluster_2 {

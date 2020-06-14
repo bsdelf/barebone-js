@@ -1,6 +1,7 @@
 import { Dialect } from 'sequelize';
 
 export interface LoggerProviderConfig {
+  enabled: boolean;
   pretty: boolean;
   file: string | null;
 }
@@ -12,6 +13,7 @@ export interface AxiosProviderConfig {
 export interface RedisProviderConfig {
   host: string;
   port: number;
+  keyPrefix: string;
 }
 
 export interface SequelizeProviderConfig {

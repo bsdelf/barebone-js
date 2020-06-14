@@ -1,8 +1,8 @@
-import it from 'ava';
+import test from 'ava';
 import pino from 'pino';
-import { Cleaner } from './cleaner';
+import { Cleaner } from '../../src/libraries/cleaner';
 
-it('Cleaner should push and drain', async (t) => {
+test('Cleaner should push and drain', async (t) => {
   const cleaner = new Cleaner(pino());
   const expectedOrder = [] as number[];
   const actualOrder = [] as number[];

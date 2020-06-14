@@ -1,7 +1,7 @@
-import it from 'ava';
-import * as utils from './utils';
+import test from 'ava';
+import * as utils from '../../src/libraries/utils';
 
-it('delay should trigger after seconds', async (t) => {
+test('delay should trigger after seconds', async (t) => {
   t.plan(1);
   const tic = Date.now();
   await utils.delay(1000);
@@ -10,14 +10,14 @@ it('delay should trigger after seconds', async (t) => {
   t.assert(elapsed === 1, `elapsed: ${elapsed}s`);
 });
 
-it('unixTime should be number of seconds', (t) => {
+test('unixTime should be number of seconds', (t) => {
   const tic = utils.unixTime();
   const toc = Math.floor(Date.now() / 1000);
   const elapsed = toc - tic;
   t.assert(elapsed === 0, `elapsed: ${elapsed}s`);
 });
 
-it('matchSourceFileName should accept source file name', (t) => {
+test('matchSourceFileName should accept source file name', (t) => {
   const cases: [string, boolean][] = [
     ['a.js', true],
     ['a.d.js', true],

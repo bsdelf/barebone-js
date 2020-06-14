@@ -1,30 +1,29 @@
 interface Parser {
   readonly index: string;
-  parse(data: NodeJS.ProcessEnv): any;
+  tryParse(data: NodeJS.ProcessEnv): any;
 }
 
 export interface Env {
-  appEnv: AppEnv;
+  nodeEnv: NodeEnv;
 }
 
-export enum AppEnv {
-  Production = 'production',
+export enum NodeEnv {
+  Test = 'test',
   Development = 'development',
   Staging = 'staging',
-  Test = 'test',
-  CI = 'ci',
+  Production = 'production',
 }
 
-class AppEnvParser {
-  static index = 'appEnv';
+class NodeEnvParser {
+  static index = 'nodeEnv';
 
-  static parse(data: NodeJS.ProcessEnv) {
-    const key = 'APP_ENV';
+  static tryParse(data: NodeJS.ProcessEnv) {
+    const key = 'NODE_ENV';
     const value = data[key];
     if (!value) {
       throw new Error(`Environment variable ${key} is required`);
     }
-    const validValues = Object.values<string>(AppEnv);
+    const validValues = Object.values<string>(NodeEnv);
     if (!validValues.includes(value)) {
       throw new Error(`Environment variable ${key} must be one of ${validValues}`);
     }
@@ -33,10 +32,10 @@ class AppEnvParser {
 }
 
 export const parseEnv = (data: NodeJS.ProcessEnv): Env => {
-  const parsers: Parser[] = [AppEnvParser];
+  const parsers: Parser[] = [NodeEnvParser];
   const result: any = {};
   for (const parser of parsers) {
-    const output = parser.parse(data);
+    const output = parser.tryParse(data);
     Object.assign(result, {
       [parser.index]: output,
     });

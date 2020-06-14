@@ -55,7 +55,7 @@ export class MigrationUpCommand implements Command {
     };
   }
 
-  async run(options: { steps?: number; fake?: boolean }) {
+  async run(options: { steps?: number; fake?: boolean } = {}) {
     const migrationController = new MigrationController();
     await migrationController.sync();
 

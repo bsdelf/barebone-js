@@ -2,9 +2,9 @@
   "watch": ["config/", "src/"],
   "ext": "js,json,ts,yaml",
   "env": {
-    "TS_NODE_FILES": "true",
-    "APP_ENV": "development"
+    "TS_NODE_FILES": "true"
   },
+  "exec": "ts-node --files",
   "execMap": {
     "ts": "ts-node --transpile-only",
     "js": "node"

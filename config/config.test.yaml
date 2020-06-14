@@ -1,0 +1,7 @@
+providers:
+  logger:
+    enabled: false
+  redis:
+    keyPrefix: 'test:'
+  sequelize:
+    database: 'barebone_test'

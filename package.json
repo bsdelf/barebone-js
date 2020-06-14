@@ -7,6 +7,8 @@
   "keywords": [
     "Backend",
     "Boilerplate",
+    "Frakeworkless",
+    "Skeleton",
     "Node.js",
     "TypeScript",
     "JavaScript"
@@ -16,13 +18,13 @@
     "clean": "tsc --build --clean",
     "lint": "eslint --ext .js,.ts ./src",
     "lint:fix": "eslint --fix --ext .js,.ts ./src",
-    "test": "cross-env APP_ENV=ci npm run build && nyc ava",
-    "http:dev": "cross-env APP_ENV=development nodemon src/applications/http.ts",
-    "http:prod": "cross-env APP_ENV=production node dist/applications/http.js",
-    "cron:dev": "cross-env APP_ENV=development nodemon src/applications/cron.ts",
-    "cron:prod": "cross-env APP_ENV=production node dist/applications/cron.js",
-    "cli:dev": "cross-env APP_ENV=development npx ts-node src/applications/cli.ts",
-    "cli:prod": "cross-env APP_ENV=production node ./dist/applications/cli.js"
+    "test": "npm run build && cross-env NODE_ENV=test node dist/test/index.js && cross-env NODE_ENV=test nyc ava --serial",
+    "http:dev": "cross-env NODE_ENV=development nodemon src/applications/http.ts",
+    "http:prod": "cross-env NODE_ENV=production node dist/applications/http.js",
+    "cron:dev": "cross-env NODE_ENV=development nodemon src/applications/cron.ts",
+    "cron:prod": "cross-env NODE_ENV=production node dist/applications/cron.js",
+    "cli:dev": "cross-env NODE_ENV=development npx ts-node --files src/applications/cli.ts",
+    "cli:prod": "cross-env NODE_ENV=production node ./dist/applications/cli.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -30,6 +32,7 @@
     "dag-maker": "^1.0.1",
     "deepmerge": "^4.2.2",
     "fastify": "^2.14.1",
+    "fastify-swagger": "^2.6.0",
     "forwardit": "^1.0.2",
     "ioredis": "^4.17.3",
     "luxon": "^1.24.1",
@@ -73,9 +76,13 @@
   "ava": {
     "failFast": true,
     "verbose": true,
+    "files": [
+      "**/*.test.*"
+    ],
     "typescript": {
       "rewritePaths": {
-        "src/": "dist/"
+        "src/": "dist/src/",
+        "test/": "dist/test/"
       }
     }
   },
@@ -84,6 +91,14 @@
     "reporter": [
       "text",
       "lcov"
+    ],
+    "exclude": [
+      "src/context",
+      "src/providers",
+      "src/migrations",
+      "src/controllers/migration.ts",
+      "src/models/migration.ts",
+      "test"
     ]
   }
 }

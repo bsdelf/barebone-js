@@ -5,7 +5,7 @@ import path from 'path';
 import yaml from 'yaml';
 import deepmerge from 'deepmerge';
 import { EnvProvider } from './env';
-import { Config } from '../libraries';
+import { Config, NodeEnv } from '../libraries';
 
 const deepMergeAll = <T>(objects: T[]) => {
   const arrayMerge = <K>(_target: unknown, source: K) => source;
@@ -28,10 +28,11 @@ export class ConfigProvider {
   }
 
   static async create(options: { envProvider: EnvProvider }) {
-    const { appEnv } = options.envProvider.env;
+    const { nodeEnv } = options.envProvider.env;
     const configStack: string[] = [];
     const configObjects: Config[] = [];
-    const configNames = ['default', appEnv, 'local'];
+    const localConfigName = nodeEnv === NodeEnv.Test ? 'local.test' : 'local';
+    const configNames = ['default', nodeEnv, localConfigName];
     for (const name of configNames) {
       const configPath = path.join('config', `config.${name}.yaml`);
       if (!fs.existsSync(configPath)) {
