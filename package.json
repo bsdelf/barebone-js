@@ -96,6 +96,7 @@
       "src/context",
       "src/providers",
       "src/migrations",
+      "src/commands/migration.ts",
       "src/controllers/migration.ts",
       "src/models/migration.ts",
       "test"
