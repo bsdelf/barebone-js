@@ -6,8 +6,9 @@ digraph G {
         style="dashed"
         cli [label="CLI"]
         cron [label="Cron"]
-        restful [label="HTTP Server"]
+        restful [label="REST Server"]
         jsonrpc [label="RPC Server"]
+        worker [label="MQ Consumer"]
     }
 
     subgraph cluster_2 {
@@ -31,6 +32,7 @@ digraph G {
     cron -> command
     restful -> route
     jsonrpc -> proc
+    worker -> command
 
     proc -> controller
     route -> controller

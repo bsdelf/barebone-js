@@ -43,8 +43,9 @@ Main applications for your project. For example:
 
 - Command line utility
 - Cron server
-- HTTP server
+- REST server
 - RPC server
+- Message queue consumer
 
 Source code under this folder should keep short and concise.
 
