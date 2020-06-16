@@ -94,6 +94,30 @@ Context provider.
 
 Sequelize migrations.
 
+Initialize migration for the first time:
+
+```
+npm run cli:dev migration:init
+```
+
+Create a new migration:
+
+```
+npm run cli:dev migration:create -- --name create-my-table
+```
+
+Apply all pending migrations:
+
+```
+npm run cli:dev migration:up
+```
+
+Undo the most recent migration:
+
+```
+npm run cli:dev migration:down
+```
+
 ### /src/libraries
 
 Utility functions and classes.
