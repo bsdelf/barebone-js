@@ -84,7 +84,7 @@ Context is global available. It is composed by various long lived objects like:
 - MySQL Client
 - Redis Client
 
-Each object has a corresponding [provider](#srcproviders), and providers may have dependencies (other providers). Therefore, we use topological sorting to initialize and finalize context.
+Each object has a corresponding [provider](#srcproviders), and providers may have dependencies (other providers). Therefore, we use topological sorting ([dag-maker](https://www.npmjs.com/package/dag-maker)) to initialize and finalize context.
 
 ### /src/providers
 
