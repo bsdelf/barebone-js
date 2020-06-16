@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
-export const healthRoute = async (fastify: FastifyInstance) => {
-  fastify.get(
+export async function healthRoute(server: FastifyInstance) {
+  server.get(
     '/health',
     {
       schema: {
@@ -19,4 +19,4 @@ export const healthRoute = async (fastify: FastifyInstance) => {
       reply.send({ status: 'ok' });
     }
   );
-};
+}

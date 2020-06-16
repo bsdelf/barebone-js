@@ -1,18 +1,33 @@
+import { Cron } from 'recron';
 import * as providers from '../providers';
-import { bootstrap, context } from '../context';
+import { bootstrap, context, Application } from '../context';
 
-const main = async () => {
-  const { logger, cron } = context;
+class CronApplication extends Application {
+  private cron?: Cron;
 
-  // use interval syntax
-  cron.schedule('@every 1s', async () => {
-    logger.info('every second');
-  });
+  async start() {
+    const cron = new Cron();
+    await cron.start();
 
-  // use crontab syntax
-  cron.schedule('*/5 * * * * *', async () => {
-    logger.info('at 5th second');
-  });
-};
+    // use interval syntax
+    cron.schedule('@every 1s', async () => {
+      context.logger.info('every second');
+    });
 
-bootstrap(main, providers.EnvProvider, providers.LoggerProvider, providers.CronProvider);
+    // use crontab syntax
+    cron.schedule('*/5 * * * * *', async () => {
+      context.logger.info('at 5th second');
+    });
+
+    this.cron = cron;
+  }
+
+  async stop() {
+    if (this.cron) {
+      await this.cron.stop();
+      this.cron = undefined;
+    }
+  }
+}
+
+bootstrap(CronApplication, providers.EnvProvider, providers.LoggerProvider);
