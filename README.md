@@ -45,7 +45,7 @@ Main applications for your project. For example:
 - Cron server
 - REST server
 - RPC server
-- Message queue consumer
+- Worker: message queue consumer
 
 Source code under this folder should keep short and concise.
 

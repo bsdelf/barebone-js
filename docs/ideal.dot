@@ -8,7 +8,7 @@ digraph G {
         cron [label="Cron"]
         restful [label="REST Server"]
         jsonrpc [label="RPC Server"]
-        worker [label="MQ Consumer"]
+        worker [label="Worker"]
     }
 
     subgraph cluster_2 {
