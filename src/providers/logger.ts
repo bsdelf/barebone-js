@@ -29,6 +29,11 @@ export class LoggerProvider {
         level: (label: string) => ({ level: label }),
       },
     };
+    if (config.level) {
+      Object.assign(loggerOptions, {
+        level: config.level,
+      });
+    }
     if (this.pretty || config.pretty) {
       Object.assign(loggerOptions, {
         prettyPrint: {
