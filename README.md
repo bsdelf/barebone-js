@@ -29,6 +29,12 @@ For unit test, the configs stack is:
 2. config.test.yaml (optional)
 3. config.local.test.yaml (optional, highest priority)
 
+To inspect the merged config object:
+
+```
+npm run cli:dev config:dump
+```
+
 In practice, the default and environmental configs are supposed to store generic insensitive settings like URL and port. While the local config is supposed to store variable and sensitive settings like tokens and passwords. Local config should never be committed into repository or built into image. For kubernetes deployments, we suggest use [volumes](https://kubernetes.io/docs/concepts/storage/volumes/) to mount local config into container.
 
 ### /src/applications
