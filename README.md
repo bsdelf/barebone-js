@@ -53,7 +53,7 @@ They just like Go's [cmd](https://github.com/golang-standards/project-layout/tre
 
 ### /src/commands
 
-Commands for specific tasks. They are expected to be invoked by applications like command line utility and cron server.
+Commands for specific tasks. They are expected to be invoked by applications like Cron or CLI.
 
 Business logic can be implemented completely in commands. However, let commands play "coordinator" role, and put actual business logic in [controllers](#srccontrollers) could make your code more reusable.
 
