@@ -41,11 +41,11 @@ In practice, the default and environmental configs are supposed to store generic
 
 Main applications for your project. For example:
 
-- Command line utility
 - Cron server
 - REST server
 - RPC server
 - Worker: message queue consumer
+- CLI: command line tools for operation or debug
 
 Source code under this folder should keep short and concise.
 
