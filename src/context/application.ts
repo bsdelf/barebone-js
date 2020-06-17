@@ -14,7 +14,9 @@ export abstract class Application {
   stop?(): Promise<void>;
 
   /**
-   * Shutdown application. Trigger on stop callback and finalize context.
+   * Shutdown application.
+   * It will trigger on stop callback and context finalizer.
+   * @param ok Whether exit code code is zero.
    */
   async exit(ok = true) {
     // lockup
