@@ -34,12 +34,20 @@ export const bootstrap = async (
   constructor: ApplicationConstructor,
   ...providerFactories: VertexFactory<any>[]
 ) => {
+  installSourceMap();
+
+  // initialize context
   try {
-    installSourceMap();
+    await context.initialize({ providerFactories });
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
 
-    await context.initialize({ providerFactories: providerFactories });
-
-    const application = new constructor();
+  // start application
+  let application: Application | undefined;
+  try {
+    application = new constructor();
     installTraps(application);
     if (application.start) {
       let options: any;
@@ -50,5 +58,8 @@ export const bootstrap = async (
     }
   } catch (err) {
     console.error(err);
+    if (application) {
+      application.exit(false);
+    }
   }
 };
