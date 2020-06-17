@@ -1,12 +1,19 @@
 import * as providers from '../src/providers';
 import { bootstrap, Application } from '../src/context';
-import { clearRedis, resetSequelize } from './utils';
+import { RedisHelper, SequelizeHelper } from './utils';
 
 class InitTestApplication extends Application {
   async start() {
     console.log('Init test...');
-    await clearRedis();
-    await resetSequelize();
+
+    // clear redis
+    const redisHelper = new RedisHelper();
+    await redisHelper.clear();
+
+    // reset sequelize
+    const sequelizeHelper = new SequelizeHelper();
+    await sequelizeHelper.reset();
+
     await this.exit();
   }
 }
