@@ -12,6 +12,6 @@ export class ConfigDumpCommand implements Command {
 
   async run() {
     const text = JSON.stringify(context.config, undefined, 2);
-    context.logger.info(`The merged config is:\n${text}`);
+    context.logger.info(`The merged config object is:\n${text}`);
   }
 }
