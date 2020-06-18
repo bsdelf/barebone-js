@@ -20,11 +20,11 @@
     "lint:fix": "eslint --fix --ext .js,.ts ./src",
     "test": "npm run build && cross-env NODE_ENV=test node dist/test/index.js && cross-env NODE_ENV=test nyc ava --serial",
     "http:dev": "cross-env NODE_ENV=development nodemon src/applications/http.ts",
-    "http:prod": "cross-env NODE_ENV=production node dist/applications/http.js",
+    "http:prod": "cross-env NODE_ENV=production node dist/src/applications/http.js",
     "cron:dev": "cross-env NODE_ENV=development nodemon src/applications/cron.ts",
-    "cron:prod": "cross-env NODE_ENV=production node dist/applications/cron.js",
+    "cron:prod": "cross-env NODE_ENV=production node dist/src/applications/cron.js",
     "cli:dev": "cross-env NODE_ENV=development npx ts-node --files src/applications/cli.ts",
-    "cli:prod": "cross-env NODE_ENV=production node ./dist/applications/cli.js"
+    "cli:prod": "cross-env NODE_ENV=production node ./dist/src/applications/cli.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
