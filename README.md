@@ -61,9 +61,18 @@ Business logic can be implemented completely in commands. However, let commands 
 
 Routes for HTTP server.
 
+Routes are responsible for I/O:
+
+- authenticate
+- validate inputs
+- invoke related components with inputs to serve the request
+- build and validate outputs, rule out sensitive data
+
 ### /src/procedures
 
 Procedures for RPC server.
+
+Procedures are quite similar to routes, they handle I/O stuffs.
 
 ### /src/controllers
 
@@ -75,15 +84,15 @@ Controllers, to be reused by other components. For example:
 
 This is the place where most of your business logic should be implemented in.
 
-Note, controllers should be stateless. Long lived global states should be kept in [context](#srccontext).
+Note, instances of controllers are short lived objects. Long lived objects should be kept in [context](#srccontext).
 
 ### /src/models
 
-Sequelize models.
+Models are primitive data abstractions. Controllers and other high level components rely on models to store data.
 
 ### /src/context
 
-Context is global available. It is composed by various long lived objects like:
+Context is composed by various long lived objects like:
 
 - Logger
 - Config
@@ -95,7 +104,7 @@ Each object has a corresponding [provider](#srcproviders), and providers may hav
 
 ### /src/providers
 
-Context provider.
+Context providers, factories.
 
 ### /src/migrations
 
@@ -133,15 +142,13 @@ Utility functions and classes.
 
 ![architecture](docs/ideal.svg)
 
-By following this boilerplate, your well developed project will eventually accomplish the above architecture.
-
 The entire software roughly has four layers, from outer to inner:
 
-- Applications
-- Coordinators
-- Controllers
-- Models
+- Applications: entrances
+- Coordinators: routes, codec, I/O
+- Controllers: business logic
+- Models: primitive data abstractions
 
-Most of them are stateless. Stateful parts are well handled by context and providers.
+As for long lived "services", they are mananged by context and providers with topological sorting.
 
 With this architecture, your project can easily achieve horizontal scale and functional scale. See [the scale cube](https://microservices.io/articles/scalecube.html).
