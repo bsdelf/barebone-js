@@ -4,12 +4,8 @@ import { MigrationController } from '../controllers';
 import { MigrationModel } from '../models';
 
 export class MigrationInitCommand implements Command {
-  get name() {
+  static get id() {
     return 'migration:init';
-  }
-
-  get options() {
-    return {};
   }
 
   async run() {
@@ -21,11 +17,11 @@ export class MigrationInitCommand implements Command {
 }
 
 export class MigrationCreateCommand implements Command {
-  get name() {
+  static get id() {
     return 'migration:create';
   }
 
-  get options() {
+  static get options() {
     return {
       string: ['name', 'template'],
     };
@@ -44,11 +40,11 @@ export class MigrationCreateCommand implements Command {
 }
 
 export class MigrationUpCommand implements Command {
-  get name() {
+  static get id() {
     return 'migration:up';
   }
 
-  get options() {
+  static get options() {
     return {
       number: ['steps'],
       boolean: ['fake'],
@@ -81,11 +77,11 @@ export class MigrationUpCommand implements Command {
 }
 
 export class MigrationDownCommand implements Command {
-  get name() {
+  static get id() {
     return 'migration:down';
   }
 
-  get options() {
+  static get options() {
     return {
       number: ['steps'],
       boolean: ['fake'],
@@ -118,12 +114,8 @@ export class MigrationDownCommand implements Command {
 }
 
 export class MigrationStatusCommand implements Command {
-  get name() {
+  static get id() {
     return 'migration:status';
-  }
-
-  get options() {
-    return {};
   }
 
   async run() {

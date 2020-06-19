@@ -2,12 +2,8 @@ import { Command } from './command';
 import { context } from '../context';
 
 export class ConfigDumpCommand implements Command {
-  get name() {
+  static get id() {
     return 'config:dump';
-  }
-
-  get options() {
-    return {};
   }
 
   async run() {

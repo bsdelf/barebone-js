@@ -2,6 +2,7 @@ import yargsParser from 'yargs-parser';
 import * as commands from '../commands';
 import * as providers from '../providers';
 import { bootstrap, context, Application } from '../context';
+import { CommandConstructor } from '../commands';
 
 const buildHeader = (text: string, options: { width?: number; symbol?: string } = {}) => {
   const { width, symbol } = { width: 25, symbol: '-', ...options };
@@ -16,38 +17,55 @@ const buildHeader = (text: string, options: { width?: number; symbol?: string } 
   return `${left} ${text} ${right}`;
 };
 
+class ProcessArgv {
+  static get node() {
+    return process.argv[0];
+  }
+
+  static get script() {
+    return process.argv[1];
+  }
+
+  static get commandName() {
+    return process.argv[2];
+  }
+
+  static get commandArgs() {
+    return process.argv.slice(3);
+  }
+}
+
 class CliApplication extends Application {
   async start() {
-    const commandInstances = new Map<string, commands.Command>();
-    for (const ctor of Object.values(commands)) {
-      const instance = new ctor();
-      commandInstances.set(instance.name, instance);
-    }
-    context.logger.info(
-      'Available commands:\n%s',
-      JSON.stringify(Array.from(commandInstances.keys()), undefined, 2)
+    // index commands
+    const commandConstructors = new Map<string, CommandConstructor>(
+      Object.values(commands).map((item) => [item.id, item])
     );
 
-    const commandName = process.argv[2];
-    const commandInstance = commandInstances.get(commandName);
+    // find & execute command
     let isCommandOk = true;
-    if (commandInstance) {
+    const commandConstructor = commandConstructors.get(ProcessArgv.commandName);
+    if (commandConstructor) {
       try {
-        // Expected layout of process.argv as follows:
-        // [0]: node
-        // [1]: script path
-        // [2]: command name
-        // [3]...[n]: command args
-        const args = yargsParser(process.argv.slice(3), commandInstance.options);
+        let options: any;
+        if (commandConstructor.options) {
+          options = yargsParser(ProcessArgv.commandArgs, commandConstructor.options);
+        }
+        const command = new commandConstructor();
         context.logger.info(buildHeader('BEGIN COMMAND'));
-        await commandInstance.run(args);
+        await command.run(options);
+        context.logger.info(buildHeader('END COMMAND'));
       } catch (err) {
         context.logger.error(err);
         isCommandOk = false;
-      } finally {
-        context.logger.info(buildHeader('END COMMAND'));
       }
+    } else {
+      context.logger.info(
+        'Available commands:\n%s',
+        JSON.stringify(Array.from(commandConstructors.keys()), undefined, 2)
+      );
     }
+
     await this.exit(isCommandOk);
   }
 }
