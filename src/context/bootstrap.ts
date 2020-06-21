@@ -25,6 +25,20 @@ const installTraps = (application: Application) => {
   });
 };
 
+class ProcessArgv {
+  static get node() {
+    return process.argv[0];
+  }
+
+  static get script() {
+    return process.argv[1];
+  }
+
+  static get applicationArgs() {
+    return process.argv.slice(2);
+  }
+}
+
 /**
  * Bootstrap an application.
  * @param constructor Application constructor.
@@ -52,7 +66,7 @@ export const bootstrap = async (
     if (application.start) {
       let options: any;
       if (constructor.options) {
-        options = yargsParser(process.argv.slice(2), constructor.options);
+        options = yargsParser(ProcessArgv.applicationArgs, constructor.options);
       }
       await application.start(options);
     }
