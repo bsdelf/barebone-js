@@ -90,21 +90,39 @@ Note, instances of controllers are short lived objects. Long lived objects shoul
 
 Models are primitive data abstractions. Controllers and other high level components rely on models to store data.
 
-### /src/context
+### /src/core
 
-Context is composed by various long lived objects like:
+Core facilities.
 
-- Logger
+#### 1. Application
+
+`Application` class provides lifecycle hooks.
+
+#### 2. Bootstrap
+
+`bootstrap` function is responsible for context initialization and application startup.
+
+#### 3. Context
+
+`Context` is composed by various long lived objects like:
+
 - Config
+- Logger
 - HTTP Client
 - MySQL Client
 - Redis Client
 
-Each object has a corresponding [provider](#srcproviders), and providers may have dependencies (other providers). Therefore, we use topological sorting ([dag-maker](https://www.npmjs.com/package/dag-maker)) to initialize and finalize context.
+Each object has a corresponding [provider](#srcproviders), which is responsible for object construction and destruction.
 
 ### /src/providers
 
-Context providers, factories.
+Context object providers follow factory pattern. Each provider has three elements:
+
+- Dependencies: providers required by object constructor.
+- Constructor: construct a new object with given dependencies.
+- Destructor: destroy a given object.
+
+With above information and methods, a topological sorting ([dag-maker](https://www.npmjs.com/package/dag-maker)) will be applied for context initialization and finalization.
 
 ### /src/migrations
 
