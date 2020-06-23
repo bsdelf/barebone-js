@@ -51,11 +51,45 @@ Source code under this folder should keep short and concise.
 
 They just like Go's [cmd](https://github.com/golang-standards/project-layout/tree/master/cmd).
 
+### /src/core
+
+Core facilities for application lifecycle.
+
+#### 1. Application
+
+`Application` class provides lifecycle hooks.
+
+#### 2. Bootstrap
+
+`bootstrap` function is responsible for context initialization and application startup.
+
+#### 3. Context
+
+`Context` is composed by various long lived objects like:
+
+- Config
+- Logger
+- HTTP Client
+- MySQL Client
+- Redis Client
+
+Each object has a corresponding [provider](#srcproviders), which is responsible for object construction and destruction.
+
+### /src/providers
+
+Context object providers. They follow factory pattern. Each provider has following elements:
+
+- Dependencies: providers required by object constructor.
+- Constructor: construct a new object with given dependencies.
+- Destructor: destroy a given object.
+
+With above information and methods, a topological sorting ([dag-maker](https://www.npmjs.com/package/dag-maker)) will be applied for context object construction and destruction.
+
 ### /src/commands
 
-Commands for specific tasks. They are expected to be invoked by applications like Cron or CLI.
+Commands for specific tasks. They are expected to be invoked by applications like Cron，CLI，Worker.
 
-Business logic can be implemented completely in commands. However, let commands play "coordinator" role, and put actual business logic in [controllers](#srccontrollers) could make your code more reusable.
+Business logic can be implemented completely in commands. However, let commands be access layer and put actual business logic in [controllers](#srccontrollers) could make your code reusable.
 
 ### /src/routes
 
@@ -90,40 +124,6 @@ Note, instances of controllers are short lived objects. Long lived objects shoul
 
 Models are primitive data abstractions. Controllers and other high level components rely on models to store data.
 
-### /src/core
-
-Core facilities.
-
-#### 1. Application
-
-`Application` class provides lifecycle hooks.
-
-#### 2. Bootstrap
-
-`bootstrap` function is responsible for context initialization and application startup.
-
-#### 3. Context
-
-`Context` is composed by various long lived objects like:
-
-- Config
-- Logger
-- HTTP Client
-- MySQL Client
-- Redis Client
-
-Each object has a corresponding [provider](#srcproviders), which is responsible for object construction and destruction.
-
-### /src/providers
-
-Context object providers follow factory pattern. Each provider has three elements:
-
-- Dependencies: providers required by object constructor.
-- Constructor: construct a new object with given dependencies.
-- Destructor: destroy a given object.
-
-With above information and methods, a topological sorting ([dag-maker](https://www.npmjs.com/package/dag-maker)) will be applied for context initialization and finalization.
-
 ### /src/migrations
 
 Sequelize migrations.
@@ -154,19 +154,19 @@ npm run cli:dev migration:down
 
 ### /src/libraries
 
-Utility functions and classes.
+Portable utility functions and classes, expected to be context irrelevant. Code under this folder can be easliy reused by other projects or published to NPM for sharing.
 
 ## Architecture
 
 ![architecture](docs/ideal.svg)
 
-The entire software roughly has four layers, from outer to inner:
+The entire software has roughly four layers, from outer to inner:
 
-- Applications: entrances
-- Coordinators: routes, codec, I/O
-- Controllers: business logic
-- Models: primitive data abstractions
+- Applications: entrances.
+- Access Layer: I/O, authenticate, request dispatch.
+- Controllers: request processing.
+- Models: primitive data abstractions.
 
-As for long lived "services", they are mananged by context and providers with topological sorting.
+Also, there are a couple of long lived "system services" mananged by context which are global available to above components.
 
-With this architecture, your project can easily achieve horizontal scale and functional scale. See [the scale cube](https://microservices.io/articles/scalecube.html).
+With this architecture, project can easily achieve horizontal scale and functional scale. See [the scale cube](https://microservices.io/articles/scalecube.html) of microservices.
