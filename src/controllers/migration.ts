@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { context } from '../context';
+import { context } from '../core';
 import { MigrationModel } from '../models';
 import { matchSourceFileName, unixTime } from '../libraries';
 

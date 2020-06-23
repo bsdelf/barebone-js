@@ -1,7 +1,7 @@
 import yargsParser from 'yargs-parser';
 import * as commands from '../commands';
 import * as providers from '../providers';
-import { bootstrap, context, Application } from '../context';
+import { bootstrap, context, Application } from '../core';
 import { CommandConstructor } from '../commands';
 
 const buildHeader = (text: string, options: { width?: number; symbol?: string } = {}) => {

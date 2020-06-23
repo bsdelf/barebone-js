@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { context } from '../context';
+import { context } from '../core';
 
 export class ConfigDumpCommand implements Command {
   static get id() {

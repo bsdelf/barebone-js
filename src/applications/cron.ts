@@ -1,6 +1,6 @@
 import { Cron } from 'recron';
 import * as providers from '../providers';
-import { bootstrap, context, Application } from '../context';
+import { bootstrap, context, Application } from '../core';
 
 class CronApplication extends Application {
   private cron?: Cron;

@@ -1,7 +1,7 @@
 import { ExecutionContext, TestInterface } from 'ava';
 import fastify from 'fastify';
 import { VertexFactory } from 'dag-maker';
-import { context } from '../src/context';
+import { context } from '../src/core';
 import { RedisProviderConfig } from '../src/libraries';
 import * as providers from '../src/providers';
 import * as commands from '../src/commands/migration';

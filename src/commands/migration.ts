@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { context } from '../context';
+import { context } from '../core';
 import { MigrationController } from '../controllers';
 import { MigrationModel } from '../models';
 

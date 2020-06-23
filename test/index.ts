@@ -1,5 +1,5 @@
 import * as providers from '../src/providers';
-import { bootstrap, Application } from '../src/context';
+import { bootstrap, Application } from '../src/core';
 import { RedisHelper, SequelizeHelper } from './utils';
 
 class InitTestApplication extends Application {

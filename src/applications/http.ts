@@ -1,5 +1,5 @@
 import fastify, { FastifyInstance } from 'fastify';
-import { bootstrap, context, Application } from '../context';
+import { bootstrap, context, Application } from '../core';
 import * as providers from '../providers';
 import * as routes from '../routes';
 
