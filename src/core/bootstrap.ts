@@ -54,7 +54,7 @@ export const bootstrap = async (
   try {
     await context.initialize({ providerFactories });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
   }
 
