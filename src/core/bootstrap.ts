@@ -14,7 +14,7 @@ const installSourceMap = () => {
 const installTraps = (application: Application) => {
   const signals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM', 'SIGUSR2'];
   const signalHandler = async (name: NodeJS.Signals) => {
-    context.logger.warn(`Got signal %s`, name);
+    console.warn(`Got signal %s`, name);
     await application.exit();
   };
   for (const signal of signals) {
@@ -26,14 +26,6 @@ const installTraps = (application: Application) => {
 };
 
 class ProcessArgv {
-  static get node() {
-    return process.argv[0];
-  }
-
-  static get script() {
-    return process.argv[1];
-  }
-
   static get applicationArgs() {
     return process.argv.slice(2);
   }
@@ -58,22 +50,34 @@ export const bootstrap = async (
     process.exit(1);
   }
 
-  // start application
-  let application: Application | undefined;
+  // create application
+  let application: Application;
   try {
     application = new constructor();
     installTraps(application);
-    if (application.start) {
+  } catch (err) {
+    console.error(err);
+    try {
+      await context.finalize();
+    } catch (err) {
+      console.error(err);
+    }
+    process.exit(1);
+  }
+
+  // start application
+  if (application.start) {
+    try {
       let options: any;
       if (constructor.options) {
         options = yargsParser(ProcessArgv.applicationArgs, constructor.options);
       }
       await application.start(options);
-    }
-  } catch (err) {
-    console.error(err);
-    if (application) {
-      application.exit(false);
+    } catch (err) {
+      console.error(err);
+      await application.exit(1);
     }
   }
+
+  return application;
 };

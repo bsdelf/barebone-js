@@ -6,6 +6,27 @@ import { RedisProviderConfig } from '../src/libraries';
 import * as providers from '../src/providers';
 import * as commands from '../src/commands/migration';
 
+export function mockConsole(t: ExecutionContext) {
+  const names = ['error', 'warn', 'info'] as const;
+  for (const name of names) {
+    const func = console[name];
+    console[name] = () => {};
+    t.teardown(() => {
+      console[name] = func;
+    });
+  }
+}
+
+export function mockProcessExit(t: ExecutionContext, expectedCode: number) {
+  const processExit = process.exit;
+  process.exit = ((actualCode?: number | undefined) => {
+    t.deepEqual(actualCode, expectedCode, 'exit code');
+  }) as () => never;
+  t.teardown(async () => {
+    process.exit = processExit;
+  });
+}
+
 export class RedisHelper {
   private config: RedisProviderConfig;
 
@@ -73,13 +94,6 @@ export function useContext(test: TestInterface, ...providerFactories: VertexFact
     await context.initialize({ providerFactories: providerFactories });
   });
 
-  // reset redis and sequelize for each test
-  test.beforeEach(async () => {
-    const redisHelper = new RedisHelper();
-    const sequelizeHelper = new SequelizeHelper();
-    await Promise.all([redisHelper.clear(), sequelizeHelper.clear()]);
-  });
-
   // finalize context after test
   test.after(async () => {
     await context.finalize();
@@ -92,6 +106,13 @@ export function useContext(test: TestInterface, ...providerFactories: VertexFact
  */
 export function useBasicContext(test: TestInterface) {
   useContext(test, providers.ConfigProvider, providers.RedisProvider, providers.SequelizeProvider);
+
+  // reset redis and sequelize for each test
+  test.beforeEach(async () => {
+    const redisHelper = new RedisHelper();
+    const sequelizeHelper = new SequelizeHelper();
+    await Promise.all([redisHelper.clear(), sequelizeHelper.clear()]);
+  });
 }
 
 type RoutePlugin = (fastify: fastify.FastifyInstance) => Promise<void>;

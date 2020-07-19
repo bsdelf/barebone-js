@@ -93,7 +93,6 @@
       "lcov"
     ],
     "exclude": [
-      "src/context",
       "src/providers",
       "src/migrations",
       "src/commands/migration.ts",

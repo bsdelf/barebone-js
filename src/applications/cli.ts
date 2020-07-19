@@ -43,7 +43,7 @@ class CliApplication extends Application {
     );
 
     // find & execute command
-    let isCommandOk = true;
+    let statusCode = 0;
     const commandConstructor = commandConstructors.get(ProcessArgv.commandName);
     if (commandConstructor) {
       try {
@@ -57,7 +57,7 @@ class CliApplication extends Application {
         context.logger.info(buildHeader('END COMMAND'));
       } catch (err) {
         context.logger.error(err);
-        isCommandOk = false;
+        statusCode = 1;
       }
     } else {
       context.logger.info(
@@ -66,7 +66,7 @@ class CliApplication extends Application {
       );
     }
 
-    await this.exit(isCommandOk);
+    await this.exit(statusCode);
   }
 }
 

@@ -16,11 +16,10 @@ export abstract class Application {
   /**
    * Exit application.
    * Trigger on stop callback and context finalizer.
-   *
-   * NOTE: code after this method call is unreachable.
-   * @param ok Whether exit code should be zero.
+   * This method never return, subsequent codes are unreachable.
+   * @param statusCode Exit status code.
    */
-  async exit(ok = true) {
+  async exit(statusCode = 0) {
     // lockup
     if (this.isExitLocked) {
       return;
@@ -28,13 +27,12 @@ export abstract class Application {
     this.isExitLocked = true;
 
     // stop application
-    let exitCode = ok ? 0 : 1;
     if (this.stop) {
       try {
         await this.stop();
       } catch (err) {
         console.error(err);
-        exitCode = 1;
+        statusCode = 1;
       }
     }
 
@@ -43,10 +41,10 @@ export abstract class Application {
       await context.finalize();
     } catch (err) {
       console.error(err);
-      exitCode = 1;
+      statusCode = 1;
     }
 
-    process.exit(exitCode);
+    process.exit(statusCode);
   }
 }
 
